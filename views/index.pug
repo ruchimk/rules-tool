@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  .w3-container
+    div.welcomePage
+      h2 Welcome to Auth0's Newest App - Rules Tool!
+      p Your one stop shop to see all the applications within your account and rules within them.
+      if locals.user
+        hr
+        h4 Try Auth0's Rules Tool App!
+        ol
+          li Go to the #[a(href="https://manage.auth0.com/dashboard/us/manage-app-rules/apis/management/explorer") API Explorer tab of your Auth0 Management API]. A token is automatically generated and displayed there.
+          li Then go to the #[a(href="https://auth0.com/docs/api/management/v2") Auth0 API v2 documentation], log in with your account, and set your token with the following scopes:.
+            ul  
+              li read:rules
+              li read:clients
+              li read:clients_keys
+          h6 
+          b Please paste your Access Token with the 3 scopes:
+          br
+          form(method='post' name='myForm' action='/listRules' onsubmit='')
+            div.form-group
+              br
+              label(for='AccessToken') Please enter your Access token:
+              br
+              textarea#accessToken.form-control(type='text', name='AccessToken' autocomplete='on' data-val='true' placeholder='Access Token' data-val-required='The generated token is required.' rows='3')
+            div.form-group
+              label(for='Domain') Please enter your complete domain ending with .auth0.com:
+              br
+              input#domain.form-control(type='text' name='Domain' placeholder='{YOUR_APP_NAME}.auth0.com')
+              span#fullDomain.domain-input 
+              br
+            br
+            button.btn.btn-primary(
+              type='submit' 
+              )  See your apps and rules!
+              
+      else
+        p You are not logged in! Please #[a(href="/login") Log In] to continue.
+
+

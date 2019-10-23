@@ -63,7 +63,7 @@ function getInfo(clients, rules) {
 
     // Regex to match the line for client.  The parentheses will capture the client name from the object. 
     // (It should be index 1 in the array on a match).
-    var clientMatch = /context.clientName === '(.*?)'/;
+    var clientMatch = /context.clientName (===|!==|==|!=) '(.*?)'/;
 
     // Add all apps to an array
     for ( var i = 0; i < clients.length; i++ ) {
@@ -77,9 +77,9 @@ function getInfo(clients, rules) {
         if ( rules[i] != undefined ) {
         var match = clientMatch.exec( rules[i]['script'] );
         if (match != null ) {
-        // We have found the line to tie this rule to an app. 
-        // As noted above, index 1 should be the app name.
-        ruleList[ match[1] ].push( rules[i]['name']);
+            // We have found the line to tie this rule to an app. 
+            // As noted above, index 2 should be the app name.
+            ruleList[ match[2] ].push( rules[i]['name']);
         } else {
             for ( var key in ruleList) {
                 // We did not find the line in the script for this rule. Assuming this should apply to ALL apps.

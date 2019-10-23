@@ -2,12 +2,12 @@
 ## Know your apps and rules!
 ### Introduction
 
-This App was made to suplement the admin dashboard for an Auth0 user to view all their apps in their account (tenant) and the rules within those apps.
+This App was made to suplement the admin dashboard for an Auth0 user to view all their apps (clients in Auth0 lingo) in their account (tenant) and the rules within those apps.
 
-#### What are rules?
+#### What are [rules](https://docs.auth0.com/rules)?
 - Rules in Auth0 are custom JavaScript code that lives in Auth0's servers and can be used to customize your apps.
-- Auth0 has Rule templates that can be used to customize rules for a specific apps (clients in Auth0), such  as "Whitelist for a specific app" or "Allow access during weekdays for a specific app"
-- You can also pull data from other sources and add it to the user profile, through [ rules](https://docs.auth0.com/rules).
+- Auth0 has Rule templates that can be used to customize rules for a specific apps, such  as **"Whitelist for a specific app"** or **"Allow access during weekdays for a specific app"**
+- You can also pull data from other sources and add it to the user profile, through rules.
 
 These templates contain code that can be customized to apply to a particular app by name or id:
 
@@ -107,3 +107,9 @@ npm start
 ```
 
 The app will be served at `localhost:3000`.
+
+### Acknowldgement:
+
+1. Auth0's [blog on Creating Simple and Secure NodeJS app](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js)
+
+2. [Auth0's Management API](https://auth0.com/docs/api/management/v2/)

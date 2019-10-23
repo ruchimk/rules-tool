@@ -5,21 +5,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
     link(rel='shortcut icon', href='https://farmersmarketlegaltoolkit.org/wp-content/uploads/2018/01/risks-tool-rules-icon.png')
-    script.
-      function validateForm(e) {
-          var accessToken = window.document.forms["myForm"]["AccessToken"].value;
-          var domain = window.document.forms["myForm"]["Domain"].value;
-          if (accessToken == "") {
-              alert("Access Token is a required field. It must be filled out");
-              return false;
-              e.preventDefault();
-          }
-          if (domain == "") {
-              alert("Domain is a required field. It must be filled out");
-              return false;
-              e.preventDefault();
-          }
-      }
+
 
   body
     nav.w3-bar.w3-border.w3-green( role="navigation" )

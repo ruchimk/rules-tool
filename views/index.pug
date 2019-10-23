@@ -18,7 +18,8 @@ block content
           h6 
           b Please paste your Access Token with the 3 scopes:
           br
-          form(method='post' name='myForm' action='/listRules' onsubmit='validateForm();')
+          div.errorDiv
+          form(method='post' name='myForm' id="myForm" action='/listRules' onsubmit='validateForm();')
             div.form-group
               br
               label(for='AccessToken') Please enter your Access token:
@@ -40,5 +41,34 @@ block content
               
       else
         p You are not logged in! Please #[a(href="/login") Log In] to continue.
-
+      script.
+      
+        function validateForm(e) {
+            var accessToken = form["AccessToken"].value;
+            var domain = form["Domain"].value;
+            var error = "";
+            if (accessToken == "" && domain == "") {
+              error = "Access Token and Domain are required fields. They must be filled out";
+              document.getElementsByClassName("errorDiv").innerHTML = error;
+              e.preventDefault();
+              return false;
+            }
+            else if (accessToken == "") {
+                error ="Access Token is a required field. It must be filled out";
+                document.getElementsByClassName("errorDiv").innerHTML = error;
+                e.preventDefault();
+                return false;
+            }
+            else if (domain == "") {
+                error = "Domain is a required field. It must be filled out";
+                document.getElementsByClassName("errorDiv").innerHTML = error;
+                e.preventDefault();
+                return false;
+            }
+            else {
+              return true;
+            }
+        }
+        const form = window.document.forms["myForm"]
+        form.addEventListener('submit', validateForm);
 

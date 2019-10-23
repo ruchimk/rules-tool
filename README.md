@@ -1,4 +1,4 @@
-#Auth0 - Rules Tool
+# Auth0 - Rules Tool 
 ## Know your apps and rules!
 ### Introduction
 
@@ -7,12 +7,13 @@ This App was made to suplement the admin dashboard for an Auth0 user to view all
 #### What are rules?
 - Rules in Auth0 are custom JavaScript code that lives in Auth0's servers and can be used to customize your apps.
 - Auth0 has Rule templates that can be used to customize rules for a specific apps (clients in Auth0), such  as "Whitelist for a specific app" or "Allow access during weekdays for a specific app"
+- You can also pull data from other sources and add it to the user profile, through [ rules](https://docs.auth0.com/rules).
 
 These templates contain code that can be customized to apply to a particular app by name or id:
 
 ```javascript
 function (user, context, callback) {
-    if (context.clientName === 'TheAppToCheckAccessTo') {
+    if (context.clientName === 'NameOfAppToCheckAccessTo') {
         // do something
     }
     callback(null, user, context);
@@ -21,60 +22,78 @@ function (user, context, callback) {
 
 ### Apps and their Rules
 
+This app makes use of Auth0's [management API](https://auth0.com/docs/api/management/v2/) to get all apps within an account and all the rules within them
 
-Install the dependencies.
+To get all clients we make use of async await to call paginate a list of all apps:
+```javascript
+//Recursive function to iterate through all the clients by calling getClientsPage 
+async function getClients(management, pagination) {
+    let allClients = [];
+    var clientPage = await getClientPage(management,pagination)
+    allClients.push( clientPage );
+    if ( clientPage.length > 0 ) {
+        pagination.page = pagination.page + 1;
+        console.log ( 'We got ' + clientPage.length + ' results with pagination of ' + pagination.per_page );
+        allClients.push(await getClients(management, pagination));
+    } else {
+        console.log ( 'We got ' + clientPage.length + ' results with pagination of ' + pagination.per_page );
+    return;
+    }
+return allClients.flat();
+}
 
-```bash
-npm install
+async function getClientPage(management, pagination ) {
+    return await management.getClients(pagination).then(function(clients) {
+        return clients;
+    })
+}
 ```
 
-Rename `.env.example` to `.env` and replace the values for `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `AUTH0_CLIENT_SECRET` with your Auth0 credentials. If you don't yet have an Auth0 account, [sign up](https://auth0.com/signup) for free.
+To get all rules that belong to an app, we use regex to match the line for client.  The parentheses will capture the client name from the object. (It should be index 2 in the array on a match).
+```javascript
+    var clientMatch = /context.clientName (===|!==|==|!=) '(.*?)'/;
+```
+
+Next, we use the clientMatch variable to find the rules tied to a particular client(app):
+```javascript
+    for( var i = 0; i < rules.length; i++ ) {
+        if ( rules[i] != undefined ) {
+        var match = clientMatch.exec( rules[i]['script'] );
+        if (match != null ) {
+            // We have found the line to tie this rule to an app. 
+            // As noted above, index 2 should be the app name.
+            ruleList[ match[2] ].push( rules[i]['name']);
+        } else {
+            for ( var key in ruleList) {
+                // We did not find the line in the script for this rule. Assuming this should apply to ALL apps.
+                ruleList[ key ].push(rules[i]['name']);
+            }
+            }
+        }
+    }
+```
+
+
+
+### To run the app:
+
+1. Install the dependencies.
+
+```bash
+npm install && npm start
+```
+
+ 2. Rename `.env.example` to `.env` and replace the values for `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and `AUTH0_CLIENT_SECRET` with your Auth0 credentials. If you don't yet have an Auth0 account, [sign up](https://auth0.com/signup) for free.
 
 ```bash
 # copy configuration and replace with your own
 cp .env.example .env
 ```
 
-Run the app.
+3. Run the app.
 
 ```bash
 npm start
 ```
 
 The app will be served at `localhost:3000`.
-
-## Running the Sample With Docker
-
-In order to run the example with docker you need to have `docker` installed.
-
-You also need to set the environment variables as explained [previously](#running-the-sample).
-
-Execute in command line `sh exec.sh` to run the Docker in Linux, or `.\exec.ps1` to run the Docker in Windows.
-
-## What is Auth0?
-
-Auth0 helps you to:
-
-* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, amont others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-* Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
-* Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
-
-## Create a free account in Auth0
-
-1. Go to [Auth0](https://auth0.com) and click Sign Up.
-2. Use Google, GitHub or Microsoft Account to login.
-
-## Issue Reporting
-
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
-
-## Author
-
-[Auth0](https://auth0.com)
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.

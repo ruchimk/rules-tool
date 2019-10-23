@@ -2,6 +2,22 @@
     color: #337ab7;
     text-decoration: none;
 }
+.rulesIcon{
+    width: 50px;
+    padding: 2px;
+    margin: 10px;
+}
+
+.w3-bar .w3-button{
+    margin:20px 0;
+}
+
+.btn.btn-primary{
+    padding: 10px;
+    background-color:#4CAF50!important;
+    border-radius: 12px;
+    color:#ffffff;
+}
 
 table {
     margin: 10px 20px;

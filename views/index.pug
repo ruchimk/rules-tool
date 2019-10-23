@@ -18,8 +18,9 @@ block content
           h6 
           b Please paste your Access Token with the 3 scopes:
           br
-          div.errorDiv
-          form(method='post' name='myForm' id="myForm" action='/listRules' onsubmit='validateForm();')
+          div#errorDiv
+            p
+          form(method='post' name='myForm' id="myForm" action='/listRules')
             div.form-group
               br
               label(for='AccessToken') Please enter your Access token:
@@ -42,33 +43,40 @@ block content
       else
         p You are not logged in! Please #[a(href="/login") Log In] to continue.
       script.
-      
-        function validateForm(e) {
+        var form = window.document.forms["myForm"];
+        var errorDiv = document.getElementById("errorDiv");
+        console.log(form);
+        form.addEventListener('submit', function(evt) {
             var accessToken = form["AccessToken"].value;
             var domain = form["Domain"].value;
             var error = "";
+            console.log("error1:", error);
             if (accessToken == "" && domain == "") {
-              error = "Access Token and Domain are required fields. They must be filled out";
-              document.getElementsByClassName("errorDiv").innerHTML = error;
-              e.preventDefault();
+              error = "ERROR:  Access Token and Domain are required fields. They must be filled out";
+              errorDiv.style.display = "block";
+              errorDiv.innerHTML = error;
+              evt.preventDefault();
+              console.log("error2:", error);
               return false;
             }
             else if (accessToken == "") {
-                error ="Access Token is a required field. It must be filled out";
-                document.getElementsByClassName("errorDiv").innerHTML = error;
-                e.preventDefault();
+                error ="ERROR: Access Token is a required field. It must be filled out";
+                errorDiv.style.display = "block";
+                errorDiv.innerHTML = error;
+                evt.preventDefault();
+                console.log("error3:", error);
                 return false;
             }
             else if (domain == "") {
-                error = "Domain is a required field. It must be filled out";
-                document.getElementsByClassName("errorDiv").innerHTML = error;
-                e.preventDefault();
+                error = "ERROR: Domain is a required field. It must be filled out";
+                errorDiv.style.display = "block";
+                errorDiv.innerHTML = error;
+                evt.preventDefault();
+                console.log("error:", error);4
                 return false;
             }
             else {
               return true;
             }
-        }
-        const form = window.document.forms["myForm"]
-        form.addEventListener('submit', validateForm);
+        });
 

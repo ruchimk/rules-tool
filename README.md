@@ -75,10 +75,13 @@ Next, we use the clientMatch variable to find the rules tied to a particular cli
 
 ## Screenshots 
 
-### Dashboard
+### Dashboard page after login:
 ![Alt text](./public/dashboardPage.png?raw=true "Dashboard view once logged in")
 
-### List Rules 
+### Dashboard page with error validation: 
+![Alt text](./public/dashboardWithErrorValidation.png?raw=true "Dashboard with error validation")
+
+### List Rules page: 
 ![Alt text](./public/listRulesPage.png?raw=true "List Rules Page")
 
 

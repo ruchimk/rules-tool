@@ -10,12 +10,11 @@ getRules and getClients,
 for accounts with many apps and rules
 */
 
-//getRules is recursive function to iterate through all the rules gotten by the getRulesPage function
+// Recursive function to iterate through all the rules by calling getRulesPage 
 async function getRules(management, pagination) {
     let allRules = [];
     var rulePage = await getRulePage(management,pagination)
     allRules.push( rulePage );
-    console.log( rulePage ) ;
     if ( rulePage.length > 0 ) {
         pagination.page = pagination.page + 1;
         console.log ( 'We got ' + rulePage.length + ' results with pagination of ' + pagination.per_page );
@@ -27,21 +26,19 @@ async function getRules(management, pagination) {
     return allRules.flat();
 }
 
-//management is be auth0 client and pagination will be 
-//an associated array of two numbers - rules per page and starting page
+// management is be auth0 client and pagination will be 
+// an associated array of two numbers - rules per page and starting page
 async function getRulePage(management, pagination ) {
-    return await management.getRules(pagination)
-        .then(function(rules) {
+    return await management.getRules(pagination).then(function(rules) {
         return rules;
     })
 }
 
-
+//Recursive function to iterate through all the clients by calling getClientsPage 
 async function getClients(management, pagination) {
     let allClients = [];
     var clientPage = await getClientPage(management,pagination)
     allClients.push( clientPage );
-    console.log( clientPage ) ;
     if ( clientPage.length > 0 ) {
         pagination.page = pagination.page + 1;
         console.log ( 'We got ' + clientPage.length + ' results with pagination of ' + pagination.per_page );
@@ -61,49 +58,41 @@ async function getClientPage(management, pagination ) {
 
 
 function getInfo(clients, rules) {
-    // Initialize variables!
+    // Initialize variables
     var ruleList = [];
-    var prettyOutput = '';
 
-    // Regex to match the line for client.  The parentheses will capture the client name from the object. (It should be index 1 in the array on a match).
+    // Regex to match the line for client.  The parentheses will capture the client name from the object. 
+    // (It should be index 1 in the array on a match).
     var clientMatch = /context.clientName === '(.*?)'/;
 
-    // Initialziing html snippets for each app
+    // Add all apps to an array
     for ( var i = 0; i < clients.length; i++ ) {
         if ( clients[i] != undefined ) {
-            ruleList[ clients[i]['name'] ] = "<b>" + clients[i]['name'] + "</b>"
+            ruleList[ clients[i]['name'] ] = [];
         }
     }
 
+    // Iterating through all rules to tie them to their apps
     for( var i = 0; i < rules.length; i++ ) {
         if ( rules[i] != undefined ) {
         var match = clientMatch.exec( rules[i]['script'] );
-        console.log( rules[i]['name'] )
         if (match != null ) {
-          // We have found the line to tie this rule to an app. As noted above, index 1 should be the app name.
-        ruleList[ match[1] ] = ruleList[ match[1] ] + '<br>' + rules[i]['name']
+        // We have found the line to tie this rule to an app. 
+        // As noted above, index 1 should be the app name.
+        ruleList[ match[1] ].push( rules[i]['name']);
         } else {
             for ( var key in ruleList) {
                 // We did not find the line in the script for this rule. Assuming this should apply to ALL apps.
-                ruleList[ key ] = ruleList[ key ] + '<br>' + rules[i]['name']
+                ruleList[ key ].push(rules[i]['name']);
+            }
             }
         }
-        }
     }
-
-    // Putting together all of our HTML snippets in one string to send to the res.send function below.
-    for ( var key in ruleList) {
-        if( key != 'All Applications' ) {
-            prettyOutput = prettyOutput + ruleList[ key ] + '<br><br>';
-        }
-    }
-    return prettyOutput;
+    console.log(ruleList);
+    return ruleList;
 }
 
-
-
 router.post('/', function (req, res) {
-    console.log(req);
     var token = req.body.AccessToken;
     var domain = req.body.Domain;
     var management = new ManagementClient({
@@ -115,10 +104,9 @@ router.post('/', function (req, res) {
         page: 0
     };
     getRules(management, rule_pagination).then(function(rules) {
-        console.log( rules );
         for( var i = 0; i < rules.length; i++ ) {
             if( rules[i] != undefined ) {
-                console.log( rules[i]['name']);
+                rules[i]['name']
             }
         }
         var client_pagination = {
@@ -128,14 +116,17 @@ router.post('/', function (req, res) {
         getClients(management, client_pagination).then(function(clients) {
             for( var i = 0; i < clients.length; i++ ) {
                 if( clients[i] != undefined ) {
-                    console.log( clients[i]['name']);
+                    clients[i]['name'];
                 }
             }
-            var output = getInfo(clients, rules );
-            res.send( output); 
+            var appsAndRulesArray = getInfo(clients, rules );
+            res.render("listRules", {appsAndRules: JSON.stringify(appsAndRulesArray) });
         });
-        });
+        
+    });
     })
+
+
 
 module.exports = router;
 

@@ -20,7 +20,7 @@ function (user, context, callback) {
 }
 ```
 
-### Apps and their Rules
+### Getting all the Rules in an App
 
 This app makes use of Auth0's [management API](https://auth0.com/docs/api/management/v2/) to get all apps within an account and all the rules within them
 
@@ -110,6 +110,8 @@ The app will be served at `localhost:3000`.
 
 ### Acknowldgement:
 
-1. Auth0's [blog on Creating Simple and Secure NodeJS app](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js)
+1. Auth0's [blog on Creating Simple and Secure NodeJS app with Authentication](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js) - used to add authentication into this app
 
-2. [Auth0's Management API](https://auth0.com/docs/api/management/v2/)
+2. [Auth0's Management API](https://auth0.com/docs/api/management/v2/) - management client was used to get all clients and rules (the meat of the application)
+
+3. [Pug templating library](https://pugjs.org/api/getting-started.html) - used to make the views for my app

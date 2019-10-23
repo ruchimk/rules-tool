@@ -108,10 +108,12 @@ npm start
 
 The app will be served at `localhost:3000`.
 
-### Acknowldgement:
+### Acknowldgements:
 
-1. Auth0's [blog on Creating Simple and Secure NodeJS app with Authentication](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js) - used to add authentication into this app
+1. Auth0's [blog on Creating Simple and Secure NodeJS app with Authentication](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js) - Used to add authentication into this app
 
-2. [Auth0's Management API](https://auth0.com/docs/api/management/v2/) - management client was used to get all clients and rules (the meat of the application)
+2. [Auth0's Management API](https://auth0.com/docs/api/management/v2/): Management client was used to get all clients and rules (the meat of the application)
 
-3. [Pug templating library](https://pugjs.org/api/getting-started.html) - used to make the views for my app
+3. [Pug templating library](https://pugjs.org/api/getting-started.html): JS Template library used in this app
+
+##### Please feel free to reach out with any questions or suggestions you may have!

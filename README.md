@@ -22,9 +22,9 @@ function (user, context, callback) {
 
 ### Getting all the Rules in an App
 
-This app makes use of Auth0's [management API](https://auth0.com/docs/api/management/v2/) to get all apps within an account and all the rules within them
+This app makes use of Auth0's [management API](https://auth0.com/docs/api/management/v2/) to get all apps within an account and all the rules within them.
 
-To get all clients we make use of async await to call paginate a list of all apps:
+To get all clients we make use of JavaScript's async/await feature to call `getClients` endpoint from the Management API to paginate a list of all apps (and do a similar call for getRules, not shown. *To see complete logic of how we were able to retrieve all your clients and rules within them, please see `listRulesRouter.js` file.*):
 ```javascript
 //Recursive function to iterate through all the clients by calling getClientsPage 
 async function getClients(management, pagination) {
@@ -48,6 +48,7 @@ async function getClientPage(management, pagination ) {
     })
 }
 ```
+** Note: to see the complete functions, see code in listRulesRouter.js file** 
 
 To get all rules that belong to an app, we use regex to match the line for client.  The parentheses will capture the client name from the object. (It should be index 2 in the array on a match).
 ```javascript
@@ -85,7 +86,7 @@ Next, we use the clientMatch variable to find the rules tied to a particular cli
 ![Alt text](./public/listRulesPage.png?raw=true "List Rules Page")
 
 
-### To run the app:
+### To run the app locally:
 
 1. Install the dependencies.
 
@@ -108,9 +109,9 @@ npm start
 
 The app will be served at `localhost:3000`.
 
-### Acknowldgements:
+### Acknowledgements:
 
-1. Auth0's [blog on Creating Simple and Secure NodeJS app with Authentication](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js) - Used to add authentication into this app
+1. Auth0's [blog on Creating Simple and Secure NodeJS app with Authentication](https://auth0.com/blog/create-a-simple-and-secure-node-express-app/#Setting-Up-Real-World-Authentication-for-Node-js): Used to add authentication into this app
 
 2. [Auth0's Management API](https://auth0.com/docs/api/management/v2/): Management client was used to get all clients and rules (the meat of the application)
 

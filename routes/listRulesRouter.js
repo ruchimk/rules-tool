@@ -59,7 +59,7 @@ async function getClientPage(management, pagination ) {
 
 function getInfo(clients, rules) {
     // Initialize variables
-    var ruleList = [];
+    var ruleList = {};
 
     // Regex to match the line for client.  The parentheses will capture the client name from the object. 
     // (It should be index 1 in the array on a match).
@@ -88,7 +88,6 @@ function getInfo(clients, rules) {
             }
         }
     }
-    console.log(ruleList);
     return ruleList;
 }
 
@@ -120,7 +119,9 @@ router.post('/', function (req, res) {
                 }
             }
             var appsAndRulesArray = getInfo(clients, rules );
-            res.render("listRules", {appsAndRules: JSON.stringify(appsAndRulesArray) });
+            console.log('Here comes the JSON');
+            console.log( appsAndRulesArray);
+            res.render("listRules", { appsAndRules: appsAndRulesArray });
         });
         
     });

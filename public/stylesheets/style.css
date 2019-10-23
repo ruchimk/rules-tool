@@ -6,7 +6,20 @@
 table {
     margin: 10px 20px;
     width: 70%;
-    border: 1;
+    border: 1px solid black;
+}
+
+th {
+    background-color: whitesmoke;
+    padding: 1em;
+    text-align: left;
+    border: 1px solid black;
+    padding: 1em;
+}
+
+td {
+    border: 1px solid black;
+    padding: 1em;
 }
 
 pre {

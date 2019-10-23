@@ -5,8 +5,12 @@ block content
         tr
             th Apps
             th Rules
-            th Number of Rules
         each rules, app in appsAndRules
-            each rule in rules
-                tr  
-                    td= rule
+            tr
+                td= app
+                td
+                    ul
+                    each rule in rules
+                        li= rule
+                    
+

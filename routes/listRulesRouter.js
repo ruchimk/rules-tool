@@ -68,7 +68,9 @@ function getInfo(clients, rules) {
     // Add all apps to an array
     for ( var i = 0; i < clients.length; i++ ) {
         if ( clients[i] != undefined ) {
-            ruleList[ clients[i]['name'] ] = [];
+            if (clients[i]['name'] !== 'All Applications') {
+                ruleList[ clients[i]['name'] ] = [];
+            }
         }
     }
 

@@ -18,7 +18,7 @@ block content
           h6 
           b Please paste your Access Token with the 3 scopes:
           br
-          form(method='post' name='myForm' action='/listRules' onsubmit='event.preventDefault(); validateForm();')
+          form(method='post' name='myForm' action='/listRules' onsubmit='validateForm();')
             div.form-group
               br
               label(for='AccessToken') Please enter your Access token:

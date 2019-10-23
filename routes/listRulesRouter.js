@@ -121,8 +121,6 @@ router.post('/', function (req, res) {
                 }
             }
             var appsAndRulesArray = getInfo(clients, rules );
-            console.log('Here comes the JSON');
-            console.log( appsAndRulesArray);
             res.render("listRules", { appsAndRules: appsAndRulesArray });
         });
         

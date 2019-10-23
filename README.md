@@ -73,6 +73,13 @@ Next, we use the clientMatch variable to find the rules tied to a particular cli
     }
 ```
 
+## Screenshots 
+
+### Dashboard
+![Alt text](./public/dashboardPage.png?raw=true "Dashboard view once logged in")
+
+### List Rules 
+![Alt text](./public/listRulesPage.png?raw=true "List Rules Page")
 
 
 ### To run the app:

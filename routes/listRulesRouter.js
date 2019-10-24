@@ -4,6 +4,16 @@ var router = express.Router();
 
 router.use(express.urlencoded())
 
+// Helper function for flattening an array
+
+Object.defineProperty(Array.prototype, 'flatArr', {
+    value: function(depth = 1) {
+        return this.reduce(function (flat, toFlatten) {
+            return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+        }, []);
+    }
+});
+
 /*
 Pagination with
 getRules and getClients, 
@@ -12,18 +22,24 @@ for accounts with many apps and rules
 
 // Recursive function to iterate through all the rules by calling getRulesPage 
 async function getRules(management, pagination) {
-    let allRules = [];
-    var rulePage = await getRulePage(management,pagination)
-    allRules.push( rulePage );
-    if ( rulePage.length > 0 ) {
-        pagination.page = pagination.page + 1;
-        console.log ( 'We got ' + rulePage.length + ' results with pagination of ' + pagination.per_page );
-        allRules.push(await getRules(management, pagination));
-    } else {
-        console.log ( 'We got ' + rulePage.length + ' results with pagination of ' + pagination.per_page );
-        return;
+    try {
+        let allRules = [];
+        var rulePage = await getRulePage(management,pagination)
+        allRules.push( rulePage );
+        if ( rulePage.length > 0 ) {
+            pagination.page = pagination.page + 1;
+            console.log ( 'We got ' + rulePage.length + ' results with pagination of ' + pagination.per_page );
+            allRules.push(await getRules(management, pagination));
+        } else {
+            console.log ( 'We got ' + rulePage.length + ' results with pagination of ' + pagination.per_page );
+            return;
+        }
+        return allRules.flatArr();
+    } 
+    catch(err) {
+        console.log(err);
+        alert(err);
     }
-    return allRules.flat();
 }
 
 // management is be auth0 client and pagination will be 
@@ -47,7 +63,7 @@ async function getClients(management, pagination) {
         console.log ( 'We got ' + clientPage.length + ' results with pagination of ' + pagination.per_page );
     return;
     }
-return allClients.flat();
+return allClients.flatArr();
 }
 
 async function getClientPage(management, pagination ) {

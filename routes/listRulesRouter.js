@@ -117,7 +117,7 @@ router.post('/', function (req, res) {
         domain: domain
     });
     var rule_pagination = {
-        per_page: 2,
+        per_page: 10,
         page: 0
     };
     getRules(management, rule_pagination)
@@ -129,7 +129,7 @@ router.post('/', function (req, res) {
                     }
                 }
                 var client_pagination = {
-                    per_page: 2,
+                    per_page: 10,
                     page: 0
                 };
                 getClients(management, client_pagination)

@@ -112,12 +112,14 @@ The app will be served at `localhost:3000`.
 ### Instructions
 
 1. Clone the repo and run `npm install && start`
+
 2. Navigate to Auth0 dashboard -> Applications -> Settings and add `http://localhost:3000/callback` and `http://localhost:3000/` to your application's Allowed Callback URLs and Allowed Logout URLs. Like so:
 ![Alt text](./public/auth0-dashboard-settings-page.png?raw=true "Auth0 App Settings")
+
 3. Navigate to Management API page and update your scope/permissions for your app to include these 3 scopes to get your API token:
-- read:rules
-- read:clients
-- read:clients_keys
+    - read:rules
+    - read:clients
+    - read:clients_keys
 ![Alt text](./public/update-scope-permissions.png?raw=true "Auth0 Management API Permissions")
 4. Enter your API token and tenant name with `auth0.com` and find out all your apps and corresponding rules!
 

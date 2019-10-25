@@ -37,8 +37,8 @@ async function getRules(management, pagination) {
         return allRules.flatArr();
     } 
     catch(err) {
-        console.log(err);
-        alert(err);
+        error = err;
+        res.render("failure", {error: error});
     }
 }
 
@@ -120,28 +120,38 @@ router.post('/', function (req, res) {
         per_page: 2,
         page: 0
     };
-    getRules(management, rule_pagination).then(function(rules) {
-        for( var i = 0; i < rules.length; i++ ) {
-            if( rules[i] != undefined ) {
-                rules[i]['name']
-            }
-        }
-        var client_pagination = {
-            per_page: 2,
-            page: 0
-        };
-        getClients(management, client_pagination).then(function(clients) {
-            for( var i = 0; i < clients.length; i++ ) {
-                if( clients[i] != undefined ) {
-                    clients[i]['name'];
+    getRules(management, rule_pagination)
+        .then(function(rules) {
+            if (rules != undefined) {
+                for( var i = 0; i < rules.length; i++ ) {
+                    if( rules[i] != undefined ) {
+                        rules[i]['name']
+                    }
                 }
+                var client_pagination = {
+                    per_page: 2,
+                    page: 0
+                };
+                getClients(management, client_pagination)
+                    .then(function(clients) {
+                        for( var i = 0; i < clients.length; i++ ) {
+                            if( clients[i] != undefined ) {
+                                clients[i]['name'];
+                            }
+                        }
+                        var appsAndRulesArray = getInfo(clients, rules );
+                        res.render("listRules", { appsAndRules: appsAndRulesArray });
+                })
+            } else {
+                error = "You don't have any rules in your account!";
+                res.render("failure", {error: error});
             }
-            var appsAndRulesArray = getInfo(clients, rules );
-            res.render("listRules", { appsAndRules: appsAndRulesArray });
+        })
+        .catch(function(err){
+            error = err;
+            res.render("failure", {error: err});
         });
-        
-    });
-    })
+});
 
 
 
